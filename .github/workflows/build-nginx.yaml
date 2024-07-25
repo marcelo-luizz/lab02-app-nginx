@@ -51,6 +51,6 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
       run: |- 
         docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
+        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
         docker push gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
+        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
