@@ -24,14 +24,12 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Login to GCR
-      id: login-gcr
-      env:
-        PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      uses: google-github-actions/setup-gcloud@v0.3.0
+      uses: 'google-github-actions/auth@v2'
       with:
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-        project_id: ${{ secrets.PROJECT_ID }}
-        export_default_credentials: true
+        credentials_json: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
 
     - name: Configure Docker Client
       id: configure-docker-client
@@ -53,6 +51,6 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
       run: |- 
         docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
+        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
         docker push gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
+        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
