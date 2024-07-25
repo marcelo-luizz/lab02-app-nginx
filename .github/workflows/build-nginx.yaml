@@ -44,7 +44,7 @@ jobs:
         GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
         APP_NAME: ${{ secrets.APP_NAME }}
         IMAGE_TAG: ${{ github.sha }}
-      run: docker build -t $GCR_REGISTRY/$APP_NAME:$IMAGE_TAG .
+      run: docker build -t gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG .
 
     - name: Push Docker Image to Container Registry GCR
       id: push-docker-image
@@ -52,4 +52,4 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME }}
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
       run: |-
-        docker push $GCR_REGISTRY/$APP_NAME:$IMAGE_TAG
+        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
