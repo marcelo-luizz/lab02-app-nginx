@@ -1,0 +1,55 @@
+name: Deploy APP "Test" -> Homolog
+on:
+  workflow_dispatch:
+  push:
+    branches: ["master"]
+
+env:
+  DOCKER_TAG: latest
+  GCP_REGION: ${{ secrets.AWS_REGION }}}
+  GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
+  APP_NAME:  ${{ secrets.APP_NAME }}
+  INSTANCE_TAG:  ${{ secrets.INSTANCE_TAG }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+
+jobs:
+  Deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Code
+      id: checkout
+      uses: actions/checkout@v2
+
+    - name: Login to GCR
+      id: login-gcr
+      env:
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ secrets.PROJECT_ID }}
+        export_default_credentials: true
+
+    - name: Configure Docker Client
+      id: configure-docker-client
+      run:  |-
+        gcloud auth configure-docker --quiet
+
+    - name: Build Docker Image
+      id: build-docker-image
+      env:
+        GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
+        APP_NAME: ${{ secrets.APP_NAME }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: docker build -t $GCR_REGISTRY/$APP_NAME:$IMAGE_TAG .
+
+    - name: Push Docker Image to Container Registry GCR
+      id: push-docker-image
+      env:
+        APP_NAME: ${{ secrets.APP_NAME }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      run: |-
+        docker push $GCR_REGISTRY/$APP_NAME:$IMAGE_TAG
