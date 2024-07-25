@@ -41,7 +41,6 @@ jobs:
       env:
         GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
         APP_NAME: ${{ secrets.APP_NAME }}
-        IMAGE_TAG: ${{ github.sha }}
       run: docker build -t $APP_NAME:latest .
 
     - name: Push Docker Image to Container Registry GCR
@@ -49,8 +48,9 @@ jobs:
       env:
         APP_NAME: ${{ secrets.APP_NAME }}
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        IMAGE_TAG: ${{ github.sha }}
       run: |- 
         docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
+        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
         docker push gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:IMAGE_TAG
+        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
