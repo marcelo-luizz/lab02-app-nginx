@@ -47,7 +47,7 @@ jobs:
       env:
         PROJECT_ID: ${{ secrets.PROJECT_ID}}
         APP_NAME: ${{ secrets.APP_NAME }}
-        VERSION: ${{ steps.version.outpus.VERSION }}
+        VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
         DOCKER_IMAGE=southamerica-east1-docker.pkg.dev/$PROJECT_ID/$APP_NAME:$VERSION
         docker build -t $DOCKER_IMAGE .
