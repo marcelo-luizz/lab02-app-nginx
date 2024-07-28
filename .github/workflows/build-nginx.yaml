@@ -5,11 +5,7 @@ on:
     branches: ["master"]
 
 env:
-  DOCKER_TAG: latest
-  GCP_REGION: ${{ secrets.AWS_REGION }}}
-  GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
   APP_NAME:  ${{ secrets.APP_NAME }}
-  INSTANCE_TAG:  ${{ secrets.INSTANCE_TAG }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
 
@@ -39,7 +35,6 @@ jobs:
     - name: Build Docker Image
       id: build-docker-image
       env:
-        GCR_REGISTRY: ${{ secrets.GCR_REGISTRY}}
         APP_NAME: ${{ secrets.APP_NAME }}
       run: docker build -t $APP_NAME:latest .
 
@@ -50,7 +45,7 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         IMAGE_TAG: ${{ github.sha }}
       run: |- 
-        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker tag $APP_NAME:latest gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
-        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:latest
-        docker push gcr.io/devops-labs-397603/services/nginx-example/prod:$IMAGE_TAG
+        docker tag $APP_NAME:latest gcr.io/$PROJECT_ID/services/$APP_NAME/homolog:latest
+        docker tag $APP_NAME:latest gcr.io/$PROJECT_ID/services/$APP_NAME/homolog:$IMAGE_TAG
+        docker push gcr.io/$PROJECT_ID/services/$APP_NAME/homolog:latest
+        docker push gcr.io/$PROJECT_ID/services/$APP_NAME/homolog:$IMAGE_TAG
