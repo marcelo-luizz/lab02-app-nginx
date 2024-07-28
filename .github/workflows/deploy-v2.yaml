@@ -49,7 +49,7 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME }}
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
-        DOCKER_IMAGE="southamerica-east1-docker.pkg.dev/$PROJECT_ID/$APP_NAME:$VERSION"
-        gcloud auth configure-docker southamerica-east1-docker.pkg.dev
+        DOCKER_IMAGE="southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:$VERSION"
+        gcloud auth configure-docker southamerica-east1-docker.pkg.dev --quiet
         docker build -t $DOCKER_IMAGE .
         docker push $DOCKER_IMAGE 
