@@ -42,7 +42,19 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME }}
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
-       
+        DOCKER_IMAGE="southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:$VERSION"
+        gcloud auth configure-docker southamerica-east1-docker.pkg.dev --quiet
+        docker build -t $DOCKER_IMAGE .
+        docker push $DOCKER_IMAGE 
+
+    - name: Deploy Image
+      id: deploy
+      env:
+        PROJECT_ID: ${{ secrets.PROJECT_ID}}
+        APP_NAME: ${{ secrets.APP_NAME }}
+        VERSION: ${{ steps.version.outputs.VERSION }}
+      run: |
+        DOCKER_IMAGE="southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:$VERSION" 
         INSTANCE_NAMES=$(gcloud compute instances list --filter="labels.tag=$INSTANCE_TAG" --format="value(name)")
         
         # Execute the docker run command on each instance
@@ -50,6 +62,10 @@ jobs:
           echo "Deploying to $INSTANCE_NAME"
           gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
             cd /home/app
-            sudo docker-compose up -d --force-recreate
+            docker rmi -f $(docker images -a -q)
+            docker pull $DOCKER_IMAGE
+            docker tag $DOCKER_IMAGE southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:latest
+            docker-compose up -d --force-recreate
+  
           "
         done
