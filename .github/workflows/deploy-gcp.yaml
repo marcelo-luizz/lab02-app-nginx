@@ -60,6 +60,7 @@ jobs:
         for INSTANCE_NAME in $INSTANCE_NAMES; do
           echo "Deploying to $INSTANCE_NAME"
           gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
+            sudo su
             cd /home/app
             docker rmi -f $(docker images -a -q)
             docker pull $DOCKER_IMAGE
