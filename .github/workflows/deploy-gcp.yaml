@@ -65,6 +65,6 @@ jobs:
             sudo docker rmi -f $(docker images -a -q)
             sudo docker pull $DOCKER_IMAGE
             sudo docker tag $DOCKER_IMAGE southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:latest
-  
+            sudo docker-compose up -d --force-recreate
           "
         done
