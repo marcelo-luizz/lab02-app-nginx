@@ -44,5 +44,6 @@ jobs:
       run: |
        
         gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
+          sudo su
           docker run -d -p 8080:80 nginx
         "
