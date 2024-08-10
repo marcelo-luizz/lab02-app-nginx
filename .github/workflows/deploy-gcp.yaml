@@ -60,12 +60,11 @@ jobs:
         for INSTANCE_NAME in $INSTANCE_NAMES; do
           echo "Deploying to $INSTANCE_NAME"
           gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
-            sudo su
             cd /home/app
-            docker rmi -f $(docker images -a -q)
-            docker pull $DOCKER_IMAGE
-            docker tag $DOCKER_IMAGE southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:latest
-            docker-compose up -d --force-recreate
+            sudo docker rmi -f $(docker images -a -q)
+            sudo docker pull $DOCKER_IMAGE
+            sudo docker tag $DOCKER_IMAGE southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:latest
+            sudo docker-compose up -d --force-recreate
   
           "
         done
