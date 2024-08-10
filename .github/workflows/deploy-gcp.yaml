@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
    
 env:
-  APP_NAME:  ${{ secrets.APP_NAME }}
+  APP_NAME:  "nginx-example-app"
   INSTANCE_TAG:  "nginx-prod"
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
