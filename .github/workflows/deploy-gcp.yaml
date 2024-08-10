@@ -49,6 +49,7 @@ jobs:
         for INSTANCE_NAME in $INSTANCE_NAMES; do
           echo "Deploying to $INSTANCE_NAME"
           gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
-            sudo docker run -d -p 80:80 nginx
+            cd /home/app
+            sudo docker-compose up -d --force-recreate
           "
         done
