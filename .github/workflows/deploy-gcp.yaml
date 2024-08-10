@@ -6,7 +6,7 @@ on:
    
 env:
   APP_NAME:  ${{ secrets.APP_NAME }}
-  INSTANCE_TAG:  ${{ secrets.INSTANCE_TAG }}
+  INSTANCE_TAG:  "nginx-prod"
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
   ZONE: "southamerica-east1-a"
