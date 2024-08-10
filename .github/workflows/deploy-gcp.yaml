@@ -1,4 +1,4 @@
-name: Deploy APP
+name: Deploy APP - GCP
 on: 
   push:
     branches: ["dev"]
