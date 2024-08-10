@@ -61,6 +61,7 @@ jobs:
           echo "Deploying to $INSTANCE_NAME"
           gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
             cd /home/app
+            gcloud auth configure-docker southamerica-east1-docker.pkg.dev
             sudo docker rmi -f $(docker images -a -q)
             sudo docker pull $DOCKER_IMAGE
             sudo docker tag $DOCKER_IMAGE southamerica-east1-docker.pkg.dev/$PROJECT_ID/backend/$APP_NAME:latest
