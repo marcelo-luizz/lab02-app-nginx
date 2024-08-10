@@ -43,7 +43,7 @@ jobs:
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
        
-        INSTANCE_NAMES=$(gcloud compute instances list --filter="tags.items=$INSTANCE_TAG" --format="value(name)")
+        INSTANCE_NAMES=$(gcloud compute instances list --filter="labels.tag=$INSTANCE_TAG" --format="value(name)")
         
         # Execute the docker run command on each instance
         for INSTANCE_NAME in $INSTANCE_NAMES; do
