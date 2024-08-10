@@ -9,7 +9,8 @@ env:
   INSTANCE_TAG:  ${{ secrets.INSTANCE_TAG }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-
+  ZONE: "southamerica-east1-a"
+  INSTANCE_NAME: "nginx"
 jobs:
   Deploy:
     name: Deploy
