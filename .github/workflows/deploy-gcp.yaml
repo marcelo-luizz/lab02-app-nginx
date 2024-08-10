@@ -10,7 +10,7 @@ env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
   ZONE: "southamerica-east1-a"
-  INSTANCE_NAME: "nginx"
+  INSTANCE_NAME: "nginx-sample"
 jobs:
   Deploy:
     name: Deploy
@@ -43,7 +43,12 @@ jobs:
         VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
        
-        gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
-          sudo su
-          docker run -d -p 8080:80 nginx
-        "
+        INSTANCE_NAMES=$(gcloud compute instances list --filter="tags.items=$INSTANCE_TAG" --format="value(name)")
+        
+        # Execute the docker run command on each instance
+        for INSTANCE_NAME in $INSTANCE_NAMES; do
+          echo "Deploying to $INSTANCE_NAME"
+          gcloud compute ssh $INSTANCE_NAME --zone $ZONE --command "
+            sudo docker run -d -p 80:80 nginx
+          "
+        done
