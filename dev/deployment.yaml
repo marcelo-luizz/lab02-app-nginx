@@ -16,7 +16,7 @@ spec:
         image: piomin/sample-spring-kotlin:1.4.8
         env:
         - name: DEMO_GREETING
-          value: "Hello from the environment"
+          value: "Hello from the environment -V1"
         ports:
         - containerPort: 8080
           name: http
