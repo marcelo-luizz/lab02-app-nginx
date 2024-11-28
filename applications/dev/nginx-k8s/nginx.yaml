@@ -1,0 +1,77 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: nginx-gke
+spec: 
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+  hostnames:
+  - "nginx.devopslabs.cloud"
+  rules:
+  - matches:
+    - path:
+        value: /
+    backendRefs:
+    - name: nginx
+      port: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  annotations:
+    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "nginx-gke"}}}'
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: nginx
+  selector:
+    app: nginx
+
+---
+
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: nginx-backend-policy
+spec:
+  default:
+    # securityPolicy: example-security-policy -> Politica de Segurança do CloudArmor
+    # timeoutSec: 40
+    logging:
+      enabled: true
+      sampleRate: 1000000
+  targetRef:
+    group: ""
+    kind: Service
+    name: nginx   
