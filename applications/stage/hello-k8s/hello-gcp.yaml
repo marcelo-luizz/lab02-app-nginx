@@ -1,0 +1,79 @@
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: HTTPRoute
+# metadata:
+#   name: store-gke
+# spec: 
+#   parentRefs:
+#   - kind: Gateway
+#     name: external-http
+#   hostnames:
+#   - "store.devopslabs.cloud"
+#   rules:
+#   - matches:
+#     - path:
+#         value: /
+#     backendRefs:
+#     - name: store
+#       port: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: store
+  template:
+    metadata:
+      labels:
+        app: store
+    spec:
+      containers:
+      - name: whereami
+        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.20
+        ports:
+          - containerPort: 8080
+        env:
+        - name: METADATA
+          value: "Gutentag!"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: store
+  annotations:
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: store
+  selector:
+    app: store
+
+---
+
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: store-backend-policy
+spec:
+  default:
+    # securityPolicy: example-security-policy -> Politica de Segurança do CloudArmor
+    # timeoutSec: 40
+    logging:
+      enabled: true
+      sampleRate: 1000000
+  targetRef:
+    group: ""
+    kind: Service
+    name: store   

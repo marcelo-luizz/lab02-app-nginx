@@ -1,0 +1,76 @@
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: HTTPRoute
+# metadata:
+#   name: play-mario
+# spec: 
+#   parentRefs:
+#   - kind: Gateway
+#     name: external-http
+#   hostnames:
+#   - "play.devopslabs.cloud"
+#   rules:
+#   - matches:
+#     - path:
+#         value: /
+#     backendRefs:
+#     - name: play-mario
+#       port: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: play-mario
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: play-mario
+  template:
+    metadata:
+      labels:
+        app: play-mario
+    spec:
+      containers:
+      - name: play-mario
+        image: pengbai/docker-supermario
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: play-mario
+  annotations:
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: play-mario
+  selector:
+    app: play-mario
+
+---
+
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: play-mario-backend-policy
+spec:
+  default:
+    # securityPolicy: example-security-policy -> Politica de Segurança do CloudArmor
+    # timeoutSec: 40
+    logging:
+      enabled: true
+      sampleRate: 1000000
+  targetRef:
+    group: ""
+    kind: Service
+    name: play-mario   
