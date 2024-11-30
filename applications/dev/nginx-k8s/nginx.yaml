@@ -49,7 +49,6 @@ kind: Service
 metadata:
   name: nginx
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "nginx-gke"}}}'
 spec:
   ports:
   - port: 80
