@@ -49,7 +49,6 @@ kind: Service
 metadata:
   name: play-mario
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "play-mario"}}}'
 spec:
   ports:
   - port: 80
