@@ -52,7 +52,6 @@ kind: Service
 metadata:
   name: store
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "hello-gke"}}}'
 spec:
   ports:
   - port: 80
