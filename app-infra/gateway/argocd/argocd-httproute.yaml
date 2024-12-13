@@ -34,7 +34,7 @@ spec:
       type: HTTP
       httpHealthCheck:
         port: 80  
-        requestPath: /healthz/live
+        requestPath: /healthz
      # httpsHealthCheck:
       #  port: 8443
       #  requestPath: /
