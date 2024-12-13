@@ -6,6 +6,7 @@ spec:
   parentRefs:
   - kind: Gateway
     name: external-http
+    namespace: gateway
   hostnames:
   - "store.devopslabs.cloud"
   rules:
