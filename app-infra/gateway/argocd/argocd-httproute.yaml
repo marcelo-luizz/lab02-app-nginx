@@ -16,3 +16,29 @@ spec:
     backendRefs:
     - name: argocd-server
       port: 80
+---
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: argocd-healthcheck
+  namespace: argocd
+spec:
+  default:
+    checkIntervalSec: 5
+    timeoutSec: 5
+    healthyThreshold: 3
+    unhealthyThreshold: 3
+    logConfig:
+      enabled: true
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: 80  
+        requestPath: /login
+     # httpsHealthCheck:
+      #  port: 8443
+      #  requestPath: /
+  targetRef:
+    group: ""
+    kind: Service
+    name: argocd-server
