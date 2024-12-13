@@ -53,6 +53,7 @@ metadata:
   name: store
 spec:
   ports:
+  type: NodePort
   - port: 80
     targetPort: 8080
     name: store
