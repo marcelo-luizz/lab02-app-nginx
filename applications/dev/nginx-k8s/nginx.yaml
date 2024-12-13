@@ -6,6 +6,7 @@ spec:
   parentRefs:
   - kind: Gateway
     name: external-http
+    namespace: gateway
   hostnames:
   - "nginx.devopslabs.cloud"
   rules:
