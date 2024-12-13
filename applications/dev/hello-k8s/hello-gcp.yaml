@@ -52,12 +52,10 @@ kind: Service
 metadata:
   name: store
   annotations:
-    cloud.google.com/app-protocols: '{"http":"HTTP"}'
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 80
-    appProtocol: HTTP
     targetPort: 8080
     name: store
   selector:
