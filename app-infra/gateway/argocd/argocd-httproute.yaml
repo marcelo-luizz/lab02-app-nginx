@@ -15,7 +15,7 @@ spec:
         value: /
     backendRefs:
     - name: argocd-server
-      name: http
+      port: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: HealthCheckPolicy
