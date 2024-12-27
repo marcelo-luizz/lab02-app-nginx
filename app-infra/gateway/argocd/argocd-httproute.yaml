@@ -8,7 +8,7 @@ spec:
     name: external-http
     namespace: gateway
   hostnames:
-  - "argocd.devopslabs.cloud"
+  - "argocd.brotherscloud.online"
   rules:
   - matches:
     - path:
