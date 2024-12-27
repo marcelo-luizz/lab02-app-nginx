@@ -12,7 +12,7 @@ spec:
   rules:
   - matches:
     - path:
-        value: /
+        value: /*
     backendRefs:
     - name: jenkins-server
       port: 80
