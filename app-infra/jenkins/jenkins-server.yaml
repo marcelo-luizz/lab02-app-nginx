@@ -54,10 +54,14 @@ spec:
 #            - name: jenkins-config
 #              mountPath: /var/jenkins_home/config.yaml
 #              subPath: config.yaml           
+      
       volumes:
         - name: jenkins-data
-          persistentVolumeClaim:
-              claimName: jenkins-home
+          emptyDir: {}
+ #     volumes:
+ #       - name: jenkins-data
+ #         persistentVolumeClaim:
+ #             claimName: jenkins-home
  #       - name: jenkins-config
  #         configMap:
  #           name: jenkins-configmap
