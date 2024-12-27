@@ -1,0 +1,46 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jenkins-server
+spec: 
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+    namespace: gateway
+  hostnames:
+  - "jenkins.brotherscloud.online"
+  rules:
+  - matches:
+    - path:
+        value: /
+    backendRefs:
+    - name: jenkins-server
+      port: 80
+---
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: jenkins-healthcheck
+  namespace: jenkins
+spec:
+  default:
+    checkIntervalSec: 5
+    timeoutSec: 5
+    healthyThreshold: 3
+    unhealthyThreshold: 3
+    logConfig:
+      enabled: true
+    config:
+      type: HTTP
+      httpHealthCheck:
+        portSpecification: USE_FIXED_PORT
+        port: 80
+        portName: http
+        requestPath: /
+     # httpsHealthCheck:
+      #  port: 8443
+      #  requestPath: /
+  targetRef:
+    group: ""
+    kind: Service
+    name: jenkins-server
