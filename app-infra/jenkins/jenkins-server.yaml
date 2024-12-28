@@ -65,7 +65,7 @@ spec:
  #       - name: jenkins-config
  #         configMap:
  #           name: jenkins-configmap
- ---
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
