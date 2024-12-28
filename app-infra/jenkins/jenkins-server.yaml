@@ -55,13 +55,24 @@ spec:
 #              mountPath: /var/jenkins_home/config.yaml
 #              subPath: config.yaml           
       
+#      volumes:
+#        - name: jenkins-data
+#          emptyDir: {}
       volumes:
         - name: jenkins-data
-          emptyDir: {}
- #     volumes:
- #       - name: jenkins-data
- #         persistentVolumeClaim:
- #             claimName: jenkins-home
+          persistentVolumeClaim:
+              claimName: jenkins-pvc
  #       - name: jenkins-config
  #         configMap:
  #           name: jenkins-configmap
+ ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
