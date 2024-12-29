@@ -33,10 +33,10 @@ spec:
     config:
       type: HTTP
       httpHealthCheck:
-   #     portSpecification: USE_FIXED_PORT
+        portSpecification: USE_FIXED_PORT
         port: 80
         portName: http
-        requestPath: /login
+        requestPath: /
      # httpsHealthCheck:
       #  port: 8443
       #  requestPath: /
