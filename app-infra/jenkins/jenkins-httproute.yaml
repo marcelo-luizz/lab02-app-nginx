@@ -36,7 +36,7 @@ spec:
         portSpecification: USE_FIXED_PORT
         port: 8080
         portName: http
-        requestPath: /
+        requestPath: /login
      # httpsHealthCheck:
       #  port: 8443
       #  requestPath: /
