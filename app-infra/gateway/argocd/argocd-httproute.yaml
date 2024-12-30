@@ -12,7 +12,7 @@ spec:
   rules:
   - matches:
     - path:
-        value: /
+        value: /*
     backendRefs:
     - name: argocd-server
       port: 80
